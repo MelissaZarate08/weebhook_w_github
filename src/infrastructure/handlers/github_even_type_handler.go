@@ -31,13 +31,12 @@ func handleGithubPullRequestEvent(ctx *gin.Context, payload []byte) {
 
 
 	// Filtrar solo pull requests con acción "closed"
-	if eventPayload.Action == "closed" {
+	if eventPayload.Action == "Closed" {
 		fmt.Println("=== Pull Request Cerrado ===")
 		fmt.Printf(" ->  Destino (Base Branch): %s\n", eventPayload.PullRequest.Base.Ref)
 		fmt.Printf(" <-  Origen (Head Branch): %s\n", eventPayload.PullRequest.Head.Ref)
 		fmt.Printf(" Usuario: %s\n", eventPayload.PullRequest.User.Login)
 		fmt.Printf(" Repositorio: %s\n", eventPayload.Repository.FullName)
-		fmt.Println("===========================")
 	}
 
 	// Verificar si el PR se dirige a la rama "develop"
