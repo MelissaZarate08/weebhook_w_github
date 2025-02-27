@@ -26,17 +26,18 @@ func handleGithubPullRequestEvent(ctx *gin.Context, payload []byte) {
 
 	// Log del evento recibido
 	log.Printf(
-		"Evento Pull Request recibido: Acción=%s, PR Título='%s', Rama Base='%s', Repositorio='%s'",
+		"Evento Pull Request recibido: Acción=%s, PR Título='%s', Rama Base='%s', Repositorio='%s'",
 		eventPayload.Action, eventPayload.PullRequest.Title, eventPayload.PullRequest.Base.Ref, eventPayload.Repository.FullName)
 
-
-	// Filtrar solo pull requests con acción "closed"
-	if eventPayload.Action == "Closed" {
+	// Imprimir siempre que el PR se cierre
+	if eventPayload.Action == "closed" {
 		fmt.Println("=== Pull Request Cerrado ===")
 		fmt.Printf(" ->  Destino (Base Branch): %s\n", eventPayload.PullRequest.Base.Ref)
 		fmt.Printf(" <-  Origen (Head Branch): %s\n", eventPayload.PullRequest.Head.Ref)
 		fmt.Printf(" Usuario: %s\n", eventPayload.PullRequest.User.Login)
 		fmt.Printf(" Repositorio: %s\n", eventPayload.Repository.FullName)
+		fmt.Println("===========================")
+		log.Println("El evento de cierre del PR ha sido procesado correctamente.")
 	}
 
 	// Verificar si el PR se dirige a la rama "develop"
@@ -50,6 +51,5 @@ func handleGithubPullRequestEvent(ctx *gin.Context, payload []byte) {
 			mainBranch, eventPayload.PullRequest.Base.Ref)
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"status": "Evento Pull Request recibido y procesado"})
-
+	ctx.JSON(http.StatusOK, gin.H{"status": "Evento Pull Request recibido y procesado"})	
 }
